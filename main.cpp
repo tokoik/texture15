@@ -10,7 +10,7 @@
 #  endif
 #  include <GL/glut.h>
 #  include <GL/glext.h>
-#  if defined(WIN32)
+#  if defined(_WIN32)
 PFNGLACTIVETEXTUREPROC glActiveTexture;
 #  endif
 #endif
@@ -59,7 +59,7 @@ static void init(void)
     perror(texture_file);
   }
 
-#if defined(WIN32)
+#if defined(_WIN32)
   glActiveTexture =
     (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
 #endif
