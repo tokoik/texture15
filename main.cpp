@@ -69,6 +69,7 @@ static void init(void)
   glGenTextures(2, texname);
 
   /* １つ目のテクスチャ名には２次元テクスチャを割り当てる */
+  glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, texname[0]);
 
   /* テクスチャの割り当て */
@@ -83,14 +84,14 @@ static void init(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-  /* テクスチャ環境 */
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
   /* 無名テクスチャに戻しておく */
   glBindTexture(GL_TEXTURE_2D, 0);
 
-#if 1
+  /* テクスチャユニット０のテクスチャ環境 */
+  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
   /* ２つ目のテクスチャにはキューブマップを割り当てる*/
+  glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_CUBE_MAP, texname[1]);
 
   for (int i = 0; i < 6; ++i) {
@@ -132,9 +133,6 @@ static void init(void)
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-  /* テクスチャユニット１のテクスチャ環境 */
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
   /* キューブマッピング用のテクスチャ座標を生成する */
   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_REFLECTION_MAP);
@@ -142,7 +140,9 @@ static void init(void)
 
   /* 無名テクスチャに戻しておく */
   glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-#endif
+
+  /* テクスチャユニット１のテクスチャ環境 */
+  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
   /* 初期設定 */
   glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
@@ -167,14 +167,14 @@ static void scene(void)
   /* 材質の設定 */
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
 
-  /* テクスチャユニット０に戻す */
+  /* テクスチャユニット０を有効にする */
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, texname[0]);
 
   /* テクスチャマッピング開始 */
   glEnable(GL_TEXTURE_2D);
 
-  /* テクスチャユニット１に切り替える */
+  /* テクスチャユニット１を有効にする */
   glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_CUBE_MAP, texname[1]);
 
@@ -183,7 +183,7 @@ static void scene(void)
   glEnable(GL_TEXTURE_GEN_S);
   glEnable(GL_TEXTURE_GEN_T);
   glEnable(GL_TEXTURE_GEN_R);
-  
+
   /* トラックボール処理による回転 */
   glMultMatrixd(trackballRotation());
 
