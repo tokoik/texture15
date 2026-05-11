@@ -107,22 +107,22 @@ cd build
    テクスチャユニット0はデフォルトで有効になっていますが、ここでは明示的に `glActiveTexture(` `GL_TEXTURE0` `)` を呼び出してユニット0を指定し、dot.raw (256×256) の画像を 2D テクスチャとして割り当てます。テクスチャ環境は `GL_MODULATE` に設定します。
 
 2. **キューブマップ (テクスチャユニット1):**
-   `glActiveTexture(GL_TEXTURE1)` を呼び出してテクスチャユニット1に切り替えます。そして、環境マッピング用の6枚の画像 (`room2ny.raw` など) を読み込み、`GL_TEXTURE_CUBE_MAP` として割り当てます。
+   `glActiveTexture(` `GL_TEXTURE1` `)` を呼び出してテクスチャユニット1に切り替えます。そして、環境マッピング用の6枚の画像 (`room2ny.raw` など) を読み込み、`GL_TEXTURE_CUBE_MAP` として割り当てます。
    また、このユニットに対してもテクスチャ環境を `GL_MODULATE` に設定し、`GL_REFLECTION_MAP` を用いてテクスチャ座標 (S, T, R) が自動生成されるように設定します。
 
 > **補足 (Windows の場合):**
-> マルチテクスチャは OpenGL 1.3 で標準機能に取り入れられたため、Windows が標準で提供する `gl.h` には `glActiveTexture` 等の宣言が含まれていません。そのため、`glext.h` をインクルードし、関数ポインタ変数 `glActiveTexture` に対して `wglGetProcAddress("glActiveTexture")` で関数ポインタを取得して使用しています。
+> マルチテクスチャは OpenGL 1.3 で標準機能に取り入れられたため、Windows が標準で提供する `gl.h` には `glActiveTexture` 等の宣言が含まれていません。そのため、`glext.h` をインクルードし、関数ポインタ変数 `glActiveTexture` に対して `wglGetProcAddress(` `"glActiveTexture"` `)` で関数ポインタを取得して使用しています。
 
 ### 4.2 描画時のマルチテクスチャの有効化 (`scene()` 関数)
 
 図形を描画する際には、それぞれのテクスチャユニットに対して個別に機能を有効化（`glEnable`）する必要があります。
 
 1. **各テクスチャユニットの有効化:**
-   まず `glActiveTexture(GL_TEXTURE0)` を呼び出して `GL_TEXTURE_2D` を有効にします。
-   次に `glActiveTexture(GL_TEXTURE1)` を呼び出して `GL_TEXTURE_CUBE_MAP` とテクスチャ座標の自動生成 (`GL_TEXTURE_GEN_S`, `GL_TEXTURE_GEN_T`, `GL_TEXTURE_GEN_R`) を有効にします。
+   まず `glActiveTexture(` `GL_TEXTURE0` `)` を呼び出して `GL_TEXTURE_2D` を有効にします。
+   次に `glActiveTexture(` `GL_TEXTURE1` `)` を呼び出して `GL_TEXTURE_CUBE_MAP` とテクスチャ座標の自動生成 (`GL_TEXTURE_GEN_S`, `GL_TEXTURE_GEN_T`, `GL_TEXTURE_GEN_R`) を有効にします。
 
 2. **オブジェクトの描画と合成:**
-   `box(1.0, 1.0, 1.0)` によって立方体を描画します。各面を描画する際、頂点には元のドット柄用のテクスチャ座標が設定されており、同時にキューブマッピング用のテクスチャ座標が自動生成されます。これら2つのテクスチャユニットのカラー値は `GL_MODULATE` によって乗算合成され、模様の付いた表面に環境が映り込んでいるような結果になります。
+   `box(` 1.0, 1.0, 1.0 `)` によって立方体を描画します。各面を描画する際、頂点には元のドット柄用のテクスチャ座標が設定されており、同時にキューブマッピング用のテクスチャ座標が自動生成されます。これら2つのテクスチャユニットのカラー値は `GL_MODULATE` によって乗算合成され、模様の付いた表面に環境が映り込んでいるような結果になります。
 
 3. **状態の復元:**
    描画が完了したら、他の描画に影響を与えないよう `glDisable` を使って、キューブマッピング、テクスチャ座標の自動生成、および 2D テクスチャマッピングを無効化します。
