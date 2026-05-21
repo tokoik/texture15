@@ -8,7 +8,7 @@
 
 このプログラムは[ひな形プログラム](https://github.com/tokoik/texture14) に対して、マルチテクスチャ機能を使ってキューブマッピングによる環境マッピングを追加したものです。
 
-![マルチテクスチャ](https://tokoik.github.io/blog/assets/images/texture15.webp)
+![マルチテクスチャ](https://tokoik.github.io/blog/assets/images/texture/texture15.webp)
 
 ## 2. ビルド方法
 
